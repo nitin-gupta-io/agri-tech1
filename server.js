@@ -3,28 +3,27 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ Serve frontend files
-app.use(express.static("public"));
-
 app.post("/predict", (req, res) => {
-    const { crop, soilMoisture, temperature } = req.body;
-    let prediction = "Average yield expected";
+  const { crop, soilMoisture, temperature } = req.body;
 
-    if (soilMoisture > 70 && temperature > 25) {
-        prediction = "High yield expected 🌾";
-    } else if (soilMoisture < 40) {
-        prediction = "Low yield, irrigation needed 💧";
-    }
+  const moisture = Number(soilMoisture);
+  const temp = Number(temperature);
 
-    res.json({ crop, soilMoisture, temperature, prediction });
+  let prediction = "Average yield expected";
+
+  if (moisture > 70 && temp > 25) {
+    prediction = "High yield expected 🌾";
+  } else if (moisture < 40) {
+    prediction = "Low yield - Irrigation needed 💧";
+  } else if (temp > 35) {
+    prediction = "High heat - Crop protection recommended ☀️";
+  }
+
+  res.json({ prediction: prediction });
 });
 
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/index.html"); // ✅ Serve homepage
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = app;
