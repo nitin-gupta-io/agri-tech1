@@ -2,7 +2,7 @@
   "name": "agritech-ai-hackathon",
   "version": "1.0.0",
   "description": "AI-powered AgriTech solution for farmers and crop management",
-  "main": "api/server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node api/server.js",
     "build": "echo 'No build step required'"
